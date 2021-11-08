@@ -1,0 +1,72 @@
+scalar DateTime
+
+extend type Query {
+    therapyTypes: [TherapyType]
+    therapyEventDurations: [TherapyEventDuration]
+
+    therapyPasses(onlyOpen: Boolean): [TherapyPass]
+    passesOfClient(clientId: ID!, onlyOpen: Boolean): [TherapyPass]
+
+    therapyEvents: [TherapyEvent]
+    eventsOfPass(passId: ID!): [TherapyEvent]
+
+    therapists: [Therapist]
+}
+
+type TherapyType {
+    id: ID!
+    description: String
+}
+
+type TherapyEventDuration {
+    id: ID!
+    minutes: Int
+    description: String
+}
+
+type TherapyPass {
+    id: ID!
+    client: Client
+    family: Family
+    therapyType: TherapyType
+    eventCount: Int
+    eventDuration: TherapyEventDuration
+    firstEvent: TherapyEvent
+    eventsTaken: Int
+    invoice: Invoice
+}
+
+type TherapyEvent {
+    id: ID!
+    client: Client
+    date: DateTime
+    week: Week
+    dayOfWeek: Int
+    cancelled: Boolean
+    therapyPass: TherapyPass
+    invoice: Invoice
+    therapist: Therapist
+    room: Room
+}
+
+type Therapist {
+    id: ID!
+    name: String
+    phone: String
+    email: String
+}
+
+type Week {
+    id: ID!
+    year: Int
+    number: Int
+}
+
+type Invoice {
+    id: ID!
+    number: String
+    client: Client
+    amount: Float
+    createdDate: DateTime
+    payData: DateTime
+}

@@ -1,0 +1,28 @@
+extend type Query {
+    clients: [Client]
+    client(id: ID!): Client
+    clientsOfFamily(familyId: ID!): [Client]
+}
+
+type Client {
+    id: ID!
+    name: String
+    phone: String
+    email: String
+    familyId: ID!
+}
+
+input ClientInput {
+    id: ID!
+    name: String
+    phone: String
+    email: String
+    familyId: ID!
+}
+
+extend type Mutation {
+    newClient(name: String, phone: String, email: String, familyId: ID!) : Client
+    newClientFull(newClient: ClientInput) : Client
+    updateClient(id: ID!, name: String, phone: String, email: String, familyId: ID!) : Client
+    removeClient(id: ID!) : Boolean
+}

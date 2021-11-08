@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Család szerkesztése</title>
+</head>
+<body>
+<div>
+    <form action="/families/save" method="POST" th:object="${family}">
+        <input type="hidden" th:field="*{id}">
+        <h1><input th:field="*{name}"/>
+            család</h1>
+        <div th:if="${!family.parents.isEmpty()}">
+            <h3>Szülők</h3>
+            <div>
+                <table>
+                    <tr>
+                        <td th:each="parent, stat : ${family.parents}">
+                            <table>
+                                <tr>
+                                    <th th:if="${stat.index==0}">Név</th>
+                                    <td><input th:field="${family.parents[__${stat.index}__].name}"/></td>
+                                </tr>
+<!--                                <tr>-->
+<!--                                    <th th:if="${stat.index==0}">Telefon</th>-->
+<!--                                    <td><input th:field="${parent.phone}"/></td>-->
+<!--                                </tr>-->
+<!--                                <tr>-->
+<!--                                    <th th:if="${stat.index==0}">E-mail</th>-->
+<!--                                    <td><input th:field="${parent.email}"/></td>-->
+<!--                                </tr>-->
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div th:if="${!family.clients.isEmpty()}">
+            <h3>Kliensek (majd keresünk jobb elnevezést)</h3>
+            <div>
+                <table>
+                    <tr>
+                        <td th:each="client, stat : ${family.clients}">
+                            <table>
+                                <tr>
+                                    <th th:if="${stat.index==0}">Név</th>
+                                    <td th:text="${client.name}"/>
+                                </tr>
+                                <tr>
+                                    <th th:if="${stat.index==0}">Telefon</th>
+                                    <td th:text="${client.phone}"/>
+                                </tr>
+                                <tr>
+                                    <th th:if="${stat.index==0}">E-mail</th>
+                                    <td th:text="${client.email}"/>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <input type="submit" value="Mentés"/>
+    </form>
+</div>
+<form action="/families">
+    <input type="submit" value="Vissza a családok listájához"/>
+</form>
+</body>
+</html>

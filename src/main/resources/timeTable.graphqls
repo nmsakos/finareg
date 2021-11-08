@@ -1,0 +1,32 @@
+scalar Time
+
+extend type Query {
+    rooms: [Room]
+    timeTables: [TimeTable]
+    timeTablesFiltered(room: ID!, therapist: ID!): [TimeTable]
+    timeTablesByClient(client: ID!): [TimeTable]
+}
+
+type Room {
+    id: ID!
+    description: String
+}
+
+type TimeTable {
+    id: ID!
+    dayOfWeek: Int
+    fromTime: Time
+    toTime: Time
+    therapyType: TherapyType
+    room: Room
+    clients: [Client]
+    therapist: Therapist
+}
+
+extend type Mutation {
+    assignTimeSlotByIdToClient(timeSlot: ID!, client: ID!) : TimeTable
+    assignTimeSlotByDayAndTimeToClient(dayOfWeek: Int!, fromTime: Time!, toTime: Time!, therapist: ID!, room: ID!, client: ID!) : TimeTable
+
+    createTimeTableSlot(dayOfWeek: Int, fromTime: Time, toTime: Time, therapyType: ID!, room: ID!, therapist: ID!, clients: [ID!]): TimeTable
+    updateTimeTableSlot(timeSlot: ID!, dayOfWeek: Int, fromTime: Time, toTime: Time, therapyType: ID!, room: ID!, therapist: ID!, clients: [ID!]): TimeTable
+}

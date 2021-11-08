@@ -1,0 +1,19 @@
+extend type Query {
+    parents: [Parent]
+    parent(id: ID!): Parent
+    parentsOfFamily(familyId: ID!): [Parent]
+}
+
+type Parent {
+    id: ID!
+    name: String
+    phone: String
+    email: String
+    familyId: ID!
+}
+
+extend type Mutation {
+    newParent(name: String, phone: String, email: String, familyId: ID!) : Parent
+    updateParent(id: ID!, name: String, phone: String, email: String, familyId: ID!) : Parent
+    removeParent(id: ID!) : Boolean
+}

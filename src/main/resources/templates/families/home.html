@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Családok</title>
+</head>
+<body>
+<h1>Minden család</h1>
+<table>
+    <tr>
+        <th>Név</th>
+        <th>Kliensek</th>
+        <th>Szülők</th>
+    </tr>
+    <tr th:each="family : ${families}">
+        <td th:text="${family.name}"></td>
+        <td th:text="${family.clientNames}"></td>
+        <td th:text="${family.parentNames}"></td>
+        <td>
+            <form th:action="@{/families/__${family.id}__/details}">
+                <input type="submit" value="Részletek"/>
+            </form>
+        </td>
+        <td>
+            <form th:action="@{/families/__${family.id}__/edit}">
+                <input type="submit" value="Szerkesztés"/>
+            </form>
+        </td>
+    </tr>
+</table>
+<form action="/families/add">
+    <input type="submit" value="Új család"/>
+</form>
+<form action="/">
+    <input type="submit" value="Vissza a főképernyőre"/>
+</form>
+</body>
+</html>

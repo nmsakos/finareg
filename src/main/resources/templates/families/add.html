@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Új család létrehozása</title>
+</head>
+<body>
+<h1 th:if="${family.id==0}">Új család</h1>
+<h1 th:if="${family.id!=0}">Család módosítása</h1>
+<form action="/families/save" method="POST" th:object="${family}">
+    <input type="hidden" th:field="*{id}"/>
+    <p>Család neve: <input type="text" th:field="*{name}"/></p>
+    <h2>Szülők</h2>
+    <table>
+        <tr>
+            <th></th>
+            <th>Név</th>
+            <th>Telefon</th>
+            <th>E-mail</th>
+        </tr>
+        <tr th:each="parent, stat : *{parents}">
+            <td><input type="hidden" th:field="*{parents[__${stat.index}__].id}"></td>
+            <td><input th:name="*{parents[__${stat.index}__].name}" th:field="*{parents[__${stat.index}__].name}"></td>
+            <td><input th:name="*{parents[__${stat.index}__].phone}" th:field="*{parents[__${stat.index}__].phone}"></td>
+            <td><input th:name="*{parents[__${stat.index}__].email}" th:field="*{parents[__${stat.index}__].email}"></td>
+<!--            <td><input type="hidden" th:name="|family.parents[${stat.index}].id|" th:field="${parent.id}"></td>-->
+<!--            <td><input  th:name="|family.parents[${stat.index}].name|" th:field="*{family.parents[__${stat.index}__].name}"></td>-->
+        </tr>
+    </table>
+    <h2>Kliensek (majd keresünk jobb elnevezést)</h2>
+    <table>
+        <tr>
+            <th></th>
+            <th>Név</th>
+            <th>Telefon</th>
+            <th>E-mail</th>
+        </tr>
+        <tr th:each="client, stat : *{clients}">
+            <td><input type="hidden" th:field="*{clients[__${stat.index}__].id}"></td>
+            <td><input th:name="*{clients[__${stat.index}__].name}" th:field="*{clients[__${stat.index}__].name}"></td>
+            <td><input th:name="*{clients[__${stat.index}__].phone}" th:field="*{clients[__${stat.index}__].phone}"></td>
+            <td><input th:name="*{clients[__${stat.index}__].email}" th:field="*{clients[__${stat.index}__].email}"></td>
+<!--            <td><input type="hidden" th:name="|family.parents[${stat.index}].id|" th:field="${parent.id}"></td>-->
+<!--            <td><input  th:name="|family.parents[${stat.index}].name|" th:field="*{family.parents[__${stat.index}__].name}"></td>-->
+        </tr>
+    </table>
+    <input type="submit">
+</form>
+</body>
+</html>

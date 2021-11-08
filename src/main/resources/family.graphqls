@@ -1,0 +1,17 @@
+type Query {
+    families: [Family]
+    family(id: ID!): Family
+}
+
+type Family {
+    id: ID!
+    name: String
+    parents: [Parent]
+    clients: [Client]
+}
+
+type Mutation {
+    newFamily(name: String) : Family
+    updateFamily(id: ID!, name: String) : Family
+    deleteFamily(id: ID!) : Family
+}
