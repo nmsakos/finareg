@@ -66,4 +66,9 @@ class TimeTableMutationResolver(
         return timeTableService.save(timeTable)
     }
 
+    fun deleteTimeTableSlot(timeSlot: Long): Boolean {
+        return timeTableService.delete(timeSlot)
+    }
+
+
 }

@@ -29,4 +29,6 @@ extend type Mutation {
 
     createTimeTableSlot(dayOfWeek: Int, fromTime: Time, toTime: Time, therapyType: ID!, room: ID!, therapist: ID!, clients: [ID!]): TimeTable
     updateTimeTableSlot(timeSlot: ID!, dayOfWeek: Int, fromTime: Time, toTime: Time, therapyType: ID!, room: ID!, therapist: ID!, clients: [ID!]): TimeTable
+
+    deleteTimeTableSlot(timeSlot: ID!): Boolean
 }
