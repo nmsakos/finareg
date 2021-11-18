@@ -2,33 +2,46 @@ package com.therakid.finareg.resolvers
 
 import com.therakid.finareg.data.*
 import com.therakid.finareg.domain.TherapyEvent
+import com.therakid.finareg.domain.TherapyEventState
 import com.therakid.finareg.domain.TherapyPass
+import com.therakid.finareg.service.*
 import graphql.kickstart.tools.GraphQLQueryResolver
 import org.springframework.stereotype.Component
 
 @Component
 class TherapyQueryResolver(
-    val therapyPassRepository: TherapyPassRepository,
-    val therapyEventRepository: TherapyEventRepository,
-    val therapyTypeRepository: TherapyTypeRepository,
-    val therapyEventDurationRepository: TherapyEventDurationRepository
+    private val therapyPassService: TherapyPassService,
+    private val therapyEventService: TherapyEventService,
+    private val therapyTypeService: TherapyTypeService,
+    private val therapyDurationService: TherapyDurationService,
+    private val therapyEventStateService: TherapyEventStateService
 ) : GraphQLQueryResolver {
 
     fun therapyTypes() =
-        therapyTypeRepository.findAll()
+        therapyTypeService.getAll()
 
     fun therapyEventDurations() =
-        therapyEventDurationRepository.findAll()
+        therapyDurationService.getAll()
+
+    fun therapyEventStates() =
+        therapyEventStateService.getAll()
 
     fun therapyPasses(onlyOpen: Boolean) =
-        therapyPassRepository.findAll().filter { !onlyOpen || it.eventCount > it.eventsTaken }
+        if (onlyOpen) {
+            therapyPassService.getOpenPasses()
+        } else {
+            therapyPassService.getAllPasses()
+        }
+
+    fun therapyPass(passId: Long) =
+        therapyPassService.getPass(passId)
 
     fun therapyEvents() =
-        therapyEventRepository.findAll()
+        therapyEventService.getAllEvents()
 
     fun passesOfClient(clientId: Long, onlyOpen: Boolean) =
-        therapyPassRepository.getOneToManyEntities(clientId).filter { !onlyOpen || it.eventCount > it.eventsTaken }
+        therapyPassService.getPassesOfClient(clientId).filter { !onlyOpen || it.eventCount > it.eventsTaken }
 
-    fun eventsOfPass(passId: Long) =
-        therapyEventRepository.getOneToManyEntities(passId)
+    fun eventsOfPass(passId: Long, noCancelled: Boolean) =
+        therapyEventService.getEventsOfPass(passId).filter { !noCancelled || it.state.id != TherapyEventState.tesCancelled.id }
 }

@@ -2,6 +2,7 @@ package com.therakid.finareg.service
 
 import com.therakid.finareg.data.TimeTableRepository
 import com.therakid.finareg.domain.Client
+import com.therakid.finareg.domain.TherapyType
 import com.therakid.finareg.domain.TimeTable
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -17,8 +18,11 @@ class TimeTableService(
     fun getAll(): List<TimeTable> =
         timeTableRepository.findAll()
 
-    fun getByClient(client: Client): List<TimeTable> =
-        timeTableRepository.getByClient(client)
+    fun getByClient(clients: List<Client>): List<TimeTable> =
+        timeTableRepository.findByClientsInOrderByDayOfWeekAscFromTimeAsc(clients)
+
+    fun getByClientAndTherapyType(clients: List<Client>, therapyType: TherapyType): List<TimeTable> =
+        timeTableRepository.findByClientsInAndTherapyTypeOrderByDayOfWeekAscFromTimeAsc(clients, therapyType)
 
     fun getById(id: Long): TimeTable =
         timeTableRepository.getById(id)

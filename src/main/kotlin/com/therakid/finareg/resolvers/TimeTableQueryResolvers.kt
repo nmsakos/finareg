@@ -1,7 +1,7 @@
 package com.therakid.finareg.resolvers
 
-import com.therakid.finareg.data.*
-import com.therakid.finareg.domain.*
+import com.therakid.finareg.domain.Room
+import com.therakid.finareg.domain.TimeTable
 import com.therakid.finareg.service.ClientService
 import com.therakid.finareg.service.RoomService
 import com.therakid.finareg.service.TherapistService
@@ -18,7 +18,7 @@ class TimeTableQueryResolvers(
 ) : GraphQLQueryResolver {
 
     fun rooms(): List<Room> =
-        roomService.getAll();
+        roomService.getAll()
 
     fun timeTables(): List<TimeTable> =
         timeTableService.getAll()
@@ -33,5 +33,5 @@ class TimeTableQueryResolvers(
         therapistService.getAll()
 
     fun timeTablesByClient(client: Long) =
-        timeTableService.getByClient(clientService.getById(client))
+        timeTableService.getByClient(listOf(clientService.getById(client)))
 }

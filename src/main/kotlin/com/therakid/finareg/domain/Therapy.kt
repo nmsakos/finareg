@@ -1,6 +1,5 @@
 package com.therakid.finareg.domain
 
-import org.hibernate.mapping.Join
 import java.math.BigDecimal
 import java.time.OffsetDateTime
 import java.time.OffsetTime
@@ -11,7 +10,8 @@ data class Week(
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
     val id: Long,
     val year: Int,
-    val number: Int
+    val number: Int,
+    val monday: OffsetDateTime
 )
 
 @Entity
@@ -24,17 +24,33 @@ data class Therapist(
 )
 
 @Entity
+data class TherapyEventState(
+    @Id
+    val id: Long,
+    val description: String
+) {
+    companion object {
+        val tesPlanned = TherapyEventState(1, "Tervezett")
+        val tesComplete = TherapyEventState(2, "Megtartott")
+        val tesCancelled = TherapyEventState(3, "Elmaradt")
+
+        private val entities = listOf(tesPlanned, tesComplete, tesCancelled)
+        fun byId(id: Long) =
+            entities.find { it.id == id }
+    }
+}
+
+@Entity
 data class TherapyEvent(
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
     val id: Long,
-    @ManyToOne
-    val client: Client,
     val date: OffsetDateTime,
     @ManyToOne
     val week: Week,
-    val dayOfWeek: Int,
-    val cancelled: Boolean
+    val dayOfWeek: Int
 ) {
+    @ManyToOne
+    var client: Client? = null
     @ManyToOne
     var therapyPass: TherapyPass? = null
 
@@ -47,17 +63,37 @@ data class TherapyEvent(
     @ManyToOne
     var invoice: Invoice? = null
 
-    constructor(id: Long, client: Client, date: OffsetDateTime, week: Week, dayOfWeek: Int, therapyPass: TherapyPass, therapist: Therapist, room: Room) : this(
+    @ManyToOne
+    var state: TherapyEventState = TherapyEventState.tesPlanned
+
+    constructor(
+        id: Long, client: Client?, date: OffsetDateTime, week: Week, dayOfWeek: Int,
+        therapyPass: TherapyPass, therapist: Therapist?, room: Room?, state: TherapyEventState
+    ) : this(
         id,
-        client,
         date,
         week,
-        dayOfWeek,
-        false
+        dayOfWeek
     ) {
+        this.client = client
         this.therapyPass = therapyPass
         this.therapist = therapist
         this.room = room
+        this.state = state
+    }
+
+    constructor(
+        id: Long, client: Client?, date: OffsetDateTime, week: Week, dayOfWeek: Int,
+        therapyPass: TherapyPass, state: TherapyEventState
+    ) : this(
+        id,
+        date,
+        week,
+        dayOfWeek
+    ) {
+        this.client = client
+        this.therapyPass = therapyPass
+        this.state = state
     }
 }
 
@@ -112,7 +148,7 @@ data class TherapyType(
         val ttBeszed = TherapyType(1, "Beszédfejlesztés")
         val ttMozgas = TherapyType(2, "Mozgásfejlesztés")
 
-        val entities = listOf<TherapyType>(ttBeszed, ttMozgas)
+        private val entities = listOf(ttBeszed, ttMozgas)
 
         fun byId(id: Long) =
             entities.find { it.id == id }
@@ -144,7 +180,7 @@ data class Room(
         val room2 = Room(2, "Vizsgáló")
         val room3 = Room(3, "Tornaszoba")
 
-        val entities = listOf<Room>(room1, room2, room3)
+        private val entities = listOf(room1, room2, room3)
         fun byId(id: Long) =
             entities.find { it.id == id }
     }
@@ -158,10 +194,13 @@ data class TimeTable(
     var dayOfWeek: Int = 0
     var fromTime: OffsetTime = OffsetTime.now()
     var toTime: OffsetTime = OffsetTime.now()
+
     @ManyToOne
     var therapyType: TherapyType? = null
+
     @ManyToOne
     var room: Room? = null
+
     @ManyToMany(fetch = FetchType.EAGER)
     var clients: List<Client>? = mutableListOf()
 
@@ -174,8 +213,14 @@ data class TimeTable(
         this.therapist = therapist
         this.dayOfWeek = dayOfWeek
         this.fromTime = fromTime
-        this.toTime =  toTime
+        this.toTime = toTime
         this.therapyType = therapyType
         this.room = room
+    }
+
+    constructor(id: Long, dayOfWeek: Int, fromTime: OffsetTime, toTime: OffsetTime, therapyType: TherapyType, room: Room, therapist: Therapist, clients: List<Client>) : this(
+        id, dayOfWeek, fromTime, toTime, therapyType, room, therapist
+    ) {
+        this.clients = clients
     }
 }

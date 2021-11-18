@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class ClientService(
-    val clientRepository: ClientRepository
+    private val clientRepository: ClientRepository
 ) {
     fun getAll(): List<Client> =
         clientRepository.findAll()
@@ -20,15 +20,15 @@ class ClientService(
         clientRepository.getById(id)
 
     fun getByFamily(familyId: Long): List<Client> =
-        clientRepository.getOneToManyEntities(listOf(familyId), listOf("familyId"))
+        clientRepository.findByFamilyId(familyId)
 
     fun getByFamily(family: Family): List<Client> =
-        clientRepository.getOneToManyEntities(family.id)
+        clientRepository.findByFamilyId(family.id)
 }
 
 @Service
 class ParentService(
-    val parentRepository: ParentRepository
+    private val parentRepository: ParentRepository
 ) {
     fun getAll(): List<Parent> =
         parentRepository.findAll()
@@ -37,17 +37,17 @@ class ParentService(
         parentRepository.getById(id)
 
     fun getByFamily(familyId: Long): List<Parent> =
-        parentRepository.getOneToManyEntities(listOf(familyId), listOf("familyId"))
+        parentRepository.findByFamilyId(familyId)
 
     fun getByFamily(family: Family): List<Parent> =
-        parentRepository.getOneToManyEntities(family.id)
+        parentRepository.findByFamilyId(family.id)
 }
 
 @Service
 class FamilyService(
-    val familyRepository: FamilyRepository,
-    val clientService: ClientService,
-    val parentService: ParentService
+    private val familyRepository: FamilyRepository,
+    private val clientService: ClientService,
+    private val parentService: ParentService
 ) {
 
     fun getAll(): List<Family> =
