@@ -13,4 +13,7 @@ class RoomService (
 
     fun getById(roomId: Long) =
         roomRepository.getById(roomId)
+
+    fun save(id: Long, description: String) =
+        roomRepository.save(Room(id, description))
 }

@@ -85,4 +85,9 @@ extend type Mutation {
     createEvent(
         clientId: ID, date: DateTime, weekId: ID, dayOfWeek: Int, passId: ID!, invoice: ID, therapistId: ID, roomId: ID, stateId: ID!): TherapyEvent
     savePass(id: ID!, clientId: ID, familyId: ID, therapyTypeId: ID, eventCount: Int, eventDurationId: ID, firstEventId: ID, eventsTaken: Int, invoice: ID): TherapyPass
+
+    saveRoom(id: ID!, description: String): Room
+    saveTherapyType(id: ID!, description: String): TherapyType
+    saveTherapyEventState(id: ID!, description: String): TherapyEventState
+    saveTherapyEventDuration(id: ID!, minutes: Int!, description: String!): TherapyEventDuration
 }

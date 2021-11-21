@@ -95,4 +95,16 @@ class TherapyMutationResolver(
             client, familyService.getById(familyId), eventsTaken
         )
     }
+
+    fun saveRoom(id: Long, description: String) =
+        roomService.save(id, description)
+
+    fun saveTherapyType(id: Long, description: String) =
+        therapyTypeService.save(id, description)
+
+    fun saveTherapyEventState(id: Long, description: String) =
+        therapyEventStateService.save(id, description)
+
+    fun saveTherapyEventDuration(id: Long, minutes: Int, description: String) =
+        therapyDurationService.save(id, minutes, description)
 }
