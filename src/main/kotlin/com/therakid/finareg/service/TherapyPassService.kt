@@ -37,7 +37,7 @@ class TherapyPassService(
         therapyType: TherapyType, eventCount: Int, eventDuration: TherapyEventDuration, clientId: Long?,
         familyId: Long, firstEventDate: OffsetDateTime, firstTimeTable: TimeTable
     ): TherapyPass {
-        val client = if (clientId != null) {
+        val client = if (clientId != null && clientId > 0) {
             clientService.getById(clientId)
         } else {
             null

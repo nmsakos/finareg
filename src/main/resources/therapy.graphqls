@@ -80,6 +80,7 @@ type Invoice {
 
 extend type Mutation {
     createPass(therapyType: ID!, eventCount: Int, eventDuration: ID!, clientId: ID, familyId: ID!, firstEventDate: DateTime, firstTimeTable: ID!) : TherapyPass
+
     updateEvent(id: ID!,
         clientId: ID, date: DateTime, weekId: ID, dayOfWeek: Int, passId: ID!, invoice: ID, therapistId: ID, roomId: ID, stateId: ID!): TherapyEvent
     createEvent(

@@ -4,7 +4,8 @@ extend type Query {
     rooms: [Room]
     timeTables: [TimeTable]
     timeTablesFiltered(room: ID!, therapist: ID!): [TimeTable]
-    timeTablesByClient(client: ID!): [TimeTable]
+    timeTablesByClients(clients: [ID!]): [TimeTable]
+    timeTablesByClientsAndTherapyType(clients: [ID!], therapyType: ID!): [TimeTable]
 }
 
 type Room {

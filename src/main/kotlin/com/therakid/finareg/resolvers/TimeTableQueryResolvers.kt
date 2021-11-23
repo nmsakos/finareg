@@ -1,20 +1,19 @@
 package com.therakid.finareg.resolvers
 
 import com.therakid.finareg.domain.Room
+import com.therakid.finareg.domain.TherapyType
 import com.therakid.finareg.domain.TimeTable
-import com.therakid.finareg.service.ClientService
-import com.therakid.finareg.service.RoomService
-import com.therakid.finareg.service.TherapistService
-import com.therakid.finareg.service.TimeTableService
+import com.therakid.finareg.service.*
 import graphql.kickstart.tools.GraphQLQueryResolver
 import org.springframework.stereotype.Component
 
 @Component
 class TimeTableQueryResolvers(
-    val roomService: RoomService,
-    val timeTableService: TimeTableService,
-    val therapistService: TherapistService,
-    val clientService: ClientService
+    private val roomService: RoomService,
+    private val timeTableService: TimeTableService,
+    private val therapistService: TherapistService,
+    private val clientService: ClientService,
+    private val therapyTypeService: TherapyTypeService
 ) : GraphQLQueryResolver {
 
     fun rooms(): List<Room> =
@@ -32,6 +31,9 @@ class TimeTableQueryResolvers(
     fun therapists() =
         therapistService.getAll()
 
-    fun timeTablesByClient(client: Long) =
-        timeTableService.getByClient(listOf(clientService.getById(client)))
+    fun timeTablesByClients(clients: List<Long>) =
+        timeTableService.getByClient(clients.map { clientService.getById(it) })
+
+    fun timeTablesByClientsAndTherapyType(clients: List<Long>, therapyType: Long) =
+        timeTableService.getByClientAndTherapyType(clients.map { clientService.getById(it) }, therapyTypeService.getById(therapyType))
 }
