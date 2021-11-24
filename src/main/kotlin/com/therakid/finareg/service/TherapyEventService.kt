@@ -10,7 +10,7 @@ class TherapyEventService(
     private val therapyEventRepository: TherapyEventRepository
 ) {
     fun getEventsOfPass(passId: Long) =
-        therapyEventRepository.findByTherapyPass_Id(passId)
+        therapyEventRepository.findByTherapyPass_IdOrderByDateAsc(passId)
 
     fun getAllEvents() =
         therapyEventRepository.findAll()

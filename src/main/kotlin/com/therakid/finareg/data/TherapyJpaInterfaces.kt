@@ -24,6 +24,6 @@ interface TherapyPassRepository : JpaRepository<TherapyPass, Long> {
 
 interface TherapyEventStateRepository : JpaRepository<TherapyEventState, Long>
 interface TherapyEventRepository : JpaRepository<TherapyEvent, Long> {
-    fun findByTherapyPass_Id(id: Long): List<TherapyEvent>
+    fun findByTherapyPass_IdOrderByDateAsc(id: Long): List<TherapyEvent>
 }
 
