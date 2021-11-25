@@ -16,7 +16,7 @@ data class Week(
 
 @Entity
 data class Therapist(
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Id
     val id: Long,
     val name: String,
     val phone: String,

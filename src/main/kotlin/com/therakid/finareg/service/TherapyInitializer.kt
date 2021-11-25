@@ -53,8 +53,8 @@ class TherapyInitializer {
 
     fun initData() {
 
-        val kata = therapistRepository.save(Therapist(0, "Fehér Kata", "+36202459782", "fhrkata@gmail.com"))
-        val anita = therapistRepository.save(Therapist(0, "Turcsik Anita", "+36209999999", "anita@gmail.com"))
+        val kata = therapistRepository.save(Therapist(1, "Fehér Kata", "+36202459782", "fhrkata@gmail.com"))
+        val anita = therapistRepository.save(Therapist(2, "Turcsik Anita", "+36209999999", "anita@gmail.com"))
 
         roomRepository.save(Room.room1)
         roomRepository.save(Room.room2)

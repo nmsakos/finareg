@@ -25,5 +25,12 @@ interface TherapyPassRepository : JpaRepository<TherapyPass, Long> {
 interface TherapyEventStateRepository : JpaRepository<TherapyEventState, Long>
 interface TherapyEventRepository : JpaRepository<TherapyEvent, Long> {
     fun findByTherapyPass_IdOrderByDateAsc(id: Long): List<TherapyEvent>
+    @Query("select new com.therakid.finareg.data.TakenEventCount(t.therapyPass.id, count(t.therapyPass)) from TherapyEvent t join t.state s where s.id = 2 GROUP By t.therapyPass")
+    fun countTakenEventsByTherapyPass(): List<TakenEventCount>
 }
+
+class TakenEventCount(
+    val passId: Long,
+    val count: Long
+)
 

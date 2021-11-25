@@ -91,4 +91,6 @@ extend type Mutation {
     saveTherapyType(id: ID!, description: String): TherapyType
     saveTherapyEventState(id: ID!, description: String): TherapyEventState
     saveTherapyEventDuration(id: ID!, minutes: Int!, description: String!): TherapyEventDuration
+
+    saveTherapist(id: ID!, name: String, phone: String, email: String): Therapist
 }

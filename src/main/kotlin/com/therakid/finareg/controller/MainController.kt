@@ -3,11 +3,14 @@ package com.therakid.finareg.controller
 import com.therakid.finareg.service.FamilyInitializer
 import com.therakid.finareg.service.TherapyInitializer
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Controller
+import org.springframework.http.MediaType
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.servlet.ModelAndView
 
-@Controller
+@CrossOrigin
+@RestController
 class MainController {
 
     @Autowired
@@ -32,4 +35,16 @@ class MainController {
         return ModelAndView("/")
     }
 
+    @RequestMapping("clearAllData", produces = arrayOf(MediaType.APPLICATION_JSON_VALUE))
+    fun clearAllData(): Response {
+        therapyInitializer.removeAll()
+        familyInitializer.removeAll()
+
+        return Response("success")
+    }
+
 }
+
+class Response(
+    val response: String
+)

@@ -18,8 +18,11 @@ class TherapyPassService(
     private val timeTableService: TimeTableService
 ) {
 
-    fun getOpenPasses() =
-        therapyPassRepository.findAll().filter { it.eventCount > it.eventsTaken }
+    fun getOpenPasses(): List<TherapyPass> {
+        val takenEvents = therapyEventRepository.countTakenEventsByTherapyPass()
+
+        return therapyPassRepository.findAll().filter { it.eventCount > (takenEvents.firstOrNull { te -> te.passId == it.id}?.count ?: 0) }
+    }
 
     fun getAllPasses() =
         therapyPassRepository.findAll()

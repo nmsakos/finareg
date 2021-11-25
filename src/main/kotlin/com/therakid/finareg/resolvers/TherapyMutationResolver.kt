@@ -107,4 +107,7 @@ class TherapyMutationResolver(
 
     fun saveTherapyEventDuration(id: Long, minutes: Int, description: String) =
         therapyDurationService.save(id, minutes, description)
+
+    fun saveTherapist(id: Long, name: String, phone: String, email: String) =
+        therapistService.save(id, name, phone, email)
 }

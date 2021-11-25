@@ -13,4 +13,7 @@ class TherapistService(
 
     fun getById(id: Long) =
         therapistRepository.getById(id)
+
+    fun save(id: Long, name: String, phone: String, email: String) =
+        therapistRepository.save(Therapist(id, name, phone, email))
 }
