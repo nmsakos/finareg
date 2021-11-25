@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.servlet.ModelAndView
+import java.time.OffsetDateTime
 
 @CrossOrigin
 @RestController
@@ -40,11 +41,12 @@ class MainController {
         therapyInitializer.removeAll()
         familyInitializer.removeAll()
 
-        return Response("success")
+        return Response( OffsetDateTime.now(),"success")
     }
 
 }
 
 class Response(
+    val date: OffsetDateTime,
     val response: String
 )

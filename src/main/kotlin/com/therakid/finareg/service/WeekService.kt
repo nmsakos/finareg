@@ -27,8 +27,14 @@ class WeekService(
         return cal.toInstant().atOffset(OffsetTime.now().offset)
     }
 
-    fun getByYearAndNumber(year: Int, number: Int) =
-        weekRepository.findByYearAndNumber(year, number) ?: weekRepository.save(Week(0, year, number, getMondayOfWeek(year, number)))
+    fun getByYearAndNumber(year: Int, number: Int): Week {
+        val week = try {
+            weekRepository.findByYearAndNumber(year, number) ?: weekRepository.save(Week(0, year, number, getMondayOfWeek(year, number)))
+        } catch (e: Exception) {
+            weekRepository.findByYearAndNumber(year, number) ?: throw e
+        }
+        return week
+    }
 
     fun getByDate(date: OffsetDateTime) =
         getByYearAndNumber(date.year, date.get(woyField))

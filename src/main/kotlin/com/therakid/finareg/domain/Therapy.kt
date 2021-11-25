@@ -6,6 +6,7 @@ import java.time.OffsetTime
 import javax.persistence.*
 
 @Entity
+@Table(uniqueConstraints = arrayOf(UniqueConstraint(columnNames = arrayOf("year", "number"))))
 data class Week(
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
     val id: Long,
